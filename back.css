@@ -1,0 +1,301 @@
+
+#centrWinB{
+position:relative;
+margin-left:auto;
+margin-right:auto;
+margin-top:10px;
+border-color:rgb(20,20,20);
+background-color:rgb(200,200,200);
+background-image:url(brut2.jpg);
+border-radius:20px;
+width:1024px;
+}
+
+#centerB{
+position:relative;
+width:90%;
+margin-left:5%;
+margin-right:5%;
+border-radius:20px;
+background:rgba(200,200,200,0.8);
+}
+
+#beginB{
+position:absolute;
+width:100%;
+}
+
+/* monitors and laptops */
+@media screen and (max-height: 1240px) and (orientation: landscape){
+#centrWinB{
+width:1024px;
+}
+}
+/* tablet */
+@media screen and (max-height: 1024px) and (orientation: landscape){
+#centrWinB{
+width:1024px;
+
+}
+}
+
+@media screen and (max-height: 800px) and (orientation: landscape){
+#centrWinB{
+width:90%;
+
+}
+}
+
+@media screen and (max-height: 768px) and (orientation: landscape)  {
+#centrWinB{
+width:90%;
+}
+}
+
+@media screen and (max-height: 533px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 603px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 600px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 480px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 414px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 412px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 384px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 375px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 360px) and (orientation: landscape) {
+#centrWinB{
+width:100%;
+}
+}
+
+@media screen and (max-height: 320px) and (orientation: landscape){
+#centrWinB{
+width:100%;
+}
+}
+/*---------------------------------------------------------------------------*/
+@media screen and (min-width: 1240px) and (orientation: portrait){
+#centrWinB{
+width:1024px;
+margin-top:30px;
+margin-bottom:auto;
+}
+#beginB{
+height:100%;
+}
+}
+/* tablet */
+@media screen and (max-width: 1024px) and (orientation: portrait){
+#centrWinB{
+
+width:1024px;
+
+margin-top:30px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait){
+#centrWinB{
+
+width:90%;
+
+margin-top:30px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 768px) and (orientation: portrait)  {
+#centrWinB{
+
+width:90%;
+
+margin-top:30px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 533px) and (orientation: portrait) {
+#centrWinB{
+
+width:100%;
+
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 603px) and (orientation: portrait) {
+#centrWinB{
+
+width:100%;
+
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 600px) and (orientation: portrait) {
+#centrWinB{
+
+width:100%;
+
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 480px) and (orientation: portrait) {
+#centrWinB{
+
+width:100%;
+
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 414px) and (orientation: portrait) {
+#centrWinB{
+
+width:100%;
+
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 412px) and (orientation: portrait) {
+#centrWinB{
+
+width:100%;
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 384px) and (orientation: portrait) {
+#centrWinB{
+
+width:100%;
+
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 375px) and (orientation: portrait) {
+#centrWinB{
+width:100%;
+
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 360px) and (orientation: portrait) {
+#centrWinB{
+
+width:100%;
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+
+height:100%;
+}
+}
+
+@media screen and (max-width: 320px) and (orientation: portrait){
+#centrWinB{
+width:100%;
+margin-top:0px;
+margin-bottom:auto;
+}
+#beginB{
+height:100%;
+}
+}
+
