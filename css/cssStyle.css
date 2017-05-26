@@ -5,10 +5,9 @@ margin-left:auto;
 margin-right:auto;
 margin-top:10px;
 border-color:rgb(20,20,20);
-background-color:rgb(200,200,200);
-background-image:url(brut2.jpg);
+background-color:rgb(200,220,240);
 border-radius:20px;
-width:1024px;
+width:50%;
 }
 
 #centerB{
@@ -17,7 +16,7 @@ width:90%;
 margin-left:5%;
 margin-right:5%;
 border-radius:20px;
-background:rgba(200,200,200,0.8);
+background-color:rgb(200,220,240);
 }
 
 #beginB{
@@ -299,3 +298,69 @@ height:100%;
 }
 }
 
+#addressWin{
+position:relative;
+background-color: rgba(100,240,240,0.8);
+padding: 1% 0 1% 0;
+width:100%;
+margin:0;
+	
+}
+
+#info{
+position:relative;
+margin-left:auto;
+margin-right:auto;
+width: 50%;
+}
+
+body{
+ background-color: rgb(200,240,240);   
+}
+
+.h40 { height: 40px; }
+
+.alignTwoRight
+{
+  position:relative; 
+  right:0px;
+  width: 75%;
+  z-index:0;
+  float:right;
+  
+}
+
+.alignTwoLeft
+{
+  position:relative;
+  left:0px;
+  width: 20%;
+  z-index:1; 
+}
+
+.inputCRDB{
+ left:30%;
+ position:absolute; 
+}
+
+.refreshCRDB{
+ right:30%;
+ position:absolute; 
+}
+
+.hOut{
+ left:40%;
+ position:absolute;
+ display:inline;
+margin: 0; 
+}
+
+.hMess{
+margin: 0; 
+}
+
+.artImg
+{
+ height:200px;
+ width:200px;
+}
