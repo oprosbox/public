@@ -8,17 +8,46 @@ and open the template in the editor.
     <head>
         <meta http-equiv="content-type" content="text/html;charset=utf-8" charset="utf-8" />
         <link href="css/cssStyle.css" rel="stylesheet" type="text/css" />
+        <script src="scripts/jquery-3.1.1.min.js"></script>
         <title></title>
+        
     </head>
+          <script type="text/javascript">
+    function getPage(numPage)          
+    { nPage="";
+     if(numPage!==""){nPage="page="+numPage;}
+      $("#centerB").load($("#userVar").attr("name")+".php",nPage);
+    }   
+    
+    $(document).ready(function(){ 
+         userVar='unreg';
+        
+        $("#regist").load("userInOut.php");
+        
+         $(document).ajaxStop(function(){
+              $("#btnRegistr").click(function(){  
+                                     $("#regist").load("userInOut.php",$("#btnRegistr").attr("name")+"=1"+
+                                                                       "&login="+$("#loginReg").val()+
+                                                                       "&password="+$("#passwordReg").val());                         
+                     }); 
+               if(userVar!=$("#userVar").attr("name"))                           
+                                    {
+                                      getPage("");
+                                      userVar=$("#userVar").attr("name");
+                                    }
+                  });       
+      
+          
+    });
+    </script>
 <body>
-<div id="centrWinB">
-<div id="centerB">
-    <h1>dfdfgdfgdfgdfg</h1><p> 
-    <h1>dfdfgdfgdfgdfg</h1> 
-</div>
-</div>
 <div id="addressWin">
-  <div id="info">Разработчик сайта: Лень В. В.</div>
+  <div id="regist"></div>
+</div> 
+<div id="centrWinB">  
+<div class="h40"></div> 
+<div id="centerB"></div>
+<div class="h40"></div> 
 </div>
 </body>
 </html>

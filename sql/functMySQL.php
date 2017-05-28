@@ -24,6 +24,17 @@ class SNews
   $size_pic;
 }
 
+class SUser
+{
+ public $login,$password,$rights,$page; 
+ public function __construct($login="",$password="",$rights='user') {
+     $this->login=$login;$this->password=$password;$this->rights=$rights;
+     $this->page=0;
+ }
+}
+
+define("USERNAME","loginUser");
+
 class WFunctMySQL extends WDBConn 
 {
 //----------------------------------------------------------------------------------------------------------------   
@@ -75,8 +86,22 @@ class WFunctMySQL extends WDBConn
       
       if($rows==1) {$row = mysqli_fetch_row($result);
                      return $row[2];}
-          elseif($rows==0){return "";}
+          elseif($rows==0){return false;}
     }
+ //-------функция выводит false - ошибка запроса;""-не найдено ни одного подходящего пользователя;"права пользователя" в случае успеха;   
+    public function selectOnlyUser($user,&$report)
+  { $report="";
+      $query="SELECT rights FROM site_users WHERE(login='$user')";
+      $result =mysqli_query($this->link,$query); 
+           if ($result===false) {
+                                $report="site_users: ошибка при чтении ".mysql_error()."\n";
+                                return false;
+                                }   
+      $rows = mysqli_num_rows($result); 
+      
+         if($rows==0){return true;}
+                     else{return false;}
+  }
   //----------------------------------------------------------------------------------------------------------------------
     public function selectNews($number,&$report)
     { $report="";
@@ -136,6 +161,25 @@ class WFunctMySQL extends WDBConn
       return true;
     }
     
+      //----------------------------------------------------------------------------------------------------------------------
+    public function selectOneNewsRefresh($id,&$outRes,&$report)
+    { 
+      $query="SELECT id,header,annonce,datePublic,text,size_pic FROM info WHERE id='$id'";
+      $result =mysqli_query( $this->link,$query); 
+           if ($result===false) {
+                                $report=$report."<br/>info: ошибка при чтении ".mysqli_error($this->link)."\n";
+                                return false;
+                               }
+      $report=$report."<br/>чтение прошло успешно";                      
+      $line=mysqli_fetch_row($result); 
+      $outRes->id=$line[0];
+      $outRes->header=$line[1];
+      $outRes->annonce=$line[2];
+      $outRes->datePublic=$line[3];
+      $outRes->text=$line[4];
+      $outRes->size_pic=$line[5];
+      return true;
+    }
         //----------------------------------------------------------------------------------------------------------------------
     public function selectImage($id,&$report)
     { 

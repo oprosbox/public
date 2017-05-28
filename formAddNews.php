@@ -63,7 +63,7 @@ $form=$form."</form>";
   }
 
 protected function isGoodPict($name,&$pict,&$size_pict,&$report)
-{$size_pict=0;
+{ $size_pict=0;
   //if(isset($_POST[$name])){ 
   $pict=$this->get_image($name,$size_pict,$report);
   if ($pict !== ''){

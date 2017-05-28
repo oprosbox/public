@@ -10,6 +10,7 @@ and open the template in the editor.
         <link href="css/cssStyle.css" rel="stylesheet" type="text/css" />
         <title></title>
     </head>
+ 
     <body>
         
            <div id="addressWin">
@@ -24,6 +25,10 @@ and open the template in the editor.
         {$reportInit="";
          $getFromBase=new WFunctMySQLOut('userUpdate','manyPassUpdate1905',$reportInit);
          echo $getFromBase->getPageData($_GET['page'], $reportInit);}
+          if(isset($_GET['pageAdmin']))
+        {$reportInit="";
+         $getFromBase=new WFunctMySQLOut('userUpdate','manyPassUpdate1905',$reportInit);
+         echo $getFromBase->getPageDataAdmin($_GET['pageAdmin'], $reportInit);}
         ?>
     
     </div>

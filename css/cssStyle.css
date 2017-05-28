@@ -307,7 +307,7 @@ margin:0;
 	
 }
 
-#info{
+#info,#regist{
 position:relative;
 margin-left:auto;
 margin-right:auto;
@@ -363,4 +363,12 @@ margin: 0;
 {
  height:200px;
  width:200px;
+}
+
+
+.addUsersReg
+{
+  margin-left:auto;
+  margin-right:auto;
+  width:40%; 
 }

@@ -32,6 +32,10 @@ if(isset($_SESSION['objAdd']))
         $sNews=new WNews;
          $_SESSION['objAdd']=$sNews;
     }
+    if(isset($_GET['idArticle']))
+        {$addToBase->selectOneNewsRefresh($_GET['idArticle'], $sNews, $report);
+         $sNews->datePublic=str_replace(" ", "T", $sNews->datePublic);
+         $sNews->setParamsFromPost();}
     if(isset($_POST['add']))
      {$addToBase->setData($sNews,$report);}//функция проверяет пришедшие данные, в случае успеха заносит их в БД, отправляет результат обработки  
      elseif(isset($_POST['refresh'])){$addToBase->refreshData($sNews, $report);}//функция проверяет пришедшие данные и отправляет результат обработки

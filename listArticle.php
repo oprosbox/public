@@ -8,12 +8,32 @@ and open the template in the editor.
      <head>
         <meta http-equiv="content-type" content="text/html;charset=utf-8" charset="utf-8" />
         <link href="css/cssStyle.css" rel="stylesheet" type="text/css" />
+        <script src="scripts/jquery-3.1.1.min.js"></script>
         <title></title>
     </head>
+        <script type="text/javascript">
+    $(document).ready(
+  function(){
+      
+    $(document).ajaxStop(function(){
+              
+               $("#btnRegistr").click(function(){
+                    // string=$("#btnRegistr").attr("name")+"=1"+
+                    //                                       "&login="+$("#loginReg").val()+
+                    //                                       "&password="+$("#passwordReg").val();
+                    //      $("#centerB").html("<h4>"+string+"</h4>");   
+                         $("#info").load("userInOut.php",$("#btnRegistr").attr("name")+"=1"+
+                                                           "&login="+$("#loginReg").val()+
+                                                           "&password="+$("#passwordReg").val());   
+                          });    
+               });       
+    $("#info").load("userInOut.php");
+    });
+    </script>
     <body>
         
 <div id="addressWin">
-  <div id="info">Разработчик сайта: Лень В. В.</div>
+  <div id="info"></div>
 </div> 
        <div id="centrWinB">  
            <div class="h40"></div> 
