@@ -3,40 +3,47 @@
 require_once 'loginPassw.php';
     
 $reportInit="";
-$report="";
+$report="&nbsp;";
 session_start();
 $currentUser=new SUser();
 //-----------------------------------------------------------------------------------------------------------
-if(isset($_GET['btnIn'])){    
-$inOut=new WLoginPass('userSelect','passToManySelect1905',$reportInit);
-$inOut->inUser($currentUser,$report);
-}
-elseif(isset($_GET['btnOut']))
-{
-$inOut=new WLoginPass('userSelect','passToManySelect1905',$reportInit);
-$inOut->outUser($currentUser,$report);
-}
-//-----------------------------------------------------------------------------------------------------------
-$btnName='';
 $btnValue='';
-if(isset($_SESSION["loginUser"])){$currentUser=$_SESSION["loginUser"];}//если пользователь уже в системе есть
-if($currentUser->login==='')
-    {$btnName='btnIn';
-     $btnValue='войти';
-     $regVar="unregArticle";
-     }
-     else{$btnName='btnOut';
-          $btnValue='выйти';
-          $regVar="adminArticle";
-          }
-         
-$result="<div id='userVar' name='$regVar'></div>\n"
-        ."<div class='usersReg'>"
-        ."<p><a href='regForm.php'><h4>регистрация</h4></a></p>"
-        ."<p><input type='text' value='$currentUser->login' id='loginReg'></p>"
-        ."<p><input type='password' value='$currentUser->password' id='passwordReg'></p>"
-        ."<p><a id='btnRegistr' name='$btnName' style='float:left;margin-right:30px'>$btnValue</a>$report</p>"
-        ."</div>";  
-       
+$flagInOut=true;
+$inOut=new WLoginPass('userSelect','passToManySelect1905',$reportInit);
+ if(isset($_SESSION[USERNAME])){$currentUser=$_SESSION[USERNAME]; $btnValue='выйти';}
+                    else{$btnValue='войти';}
+                            
+if(isset($_GET['btnInOut']))
+    {
+    if(isset($_SESSION[USERNAME])){$flagInOut=$inOut->outUser($currentUser,$report);
+                                    if($flagInOut===true){$btnValue='войти';}
+                                    else{$btnValue='выйти';}}
+                    else{$flagInOut=$inOut->inUser($currentUser,$report);
+                         if($flagInOut===true){$btnValue='выйти';}
+                                 else{$btnValue='войти';}
+                            }
+    }    
+    
 
+    
+      
+
+$result="<div class='usersReg'>"
+        ."<div><a href='regForm.php'>регистрация</a></div>"
+        ."<div><h4>Логин:</h4><input type='text' value='$currentUser->login' id='loginReg'/></div>"
+        ."<div><h4>Пароль:</h4><input type='password' value='$currentUser->password' id='passwordReg'/></div>"
+        ."<div class='endLine'><a id='btnRegistr' name='btnInOut'>$btnValue</a>"
+        ."<div id='reportOutIn'>$report</div></div>"
+        ."</div>"
+   //скрипт отвечает за работу кнопки входа пользователя и обновления ленты новостей в случае если произошел вход или выход     
+        ."<script>"
+        ."\$(document).ready(function(){" 
+        ."\$('#btnRegistr').click(function(){getRegist(\$('#loginReg').val(),\$('#passwordReg').val());});";
+  if($flagInOut===true){$result=$result."getPage('');";}
+        
+ $result=$result ." hideFunct('#reportOutIn',5000);"
+         ."});"  
+         ."</script>"; 
+ 
 echo $result;
+?>

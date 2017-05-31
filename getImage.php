@@ -12,4 +12,11 @@ if(is_null($image)){}
                 else{echo $getFromBase->selectImage($_GET['img'], $report);}
                 
 }
-
+elseif(isset($_GET['picture'])) {
+    session_start();
+    
+if(isset($_SESSION['objAdd']))
+    {header('Content-type: image/jpeg');
+     echo $_SESSION['objAdd']->picture;}
+    
+}

@@ -61,6 +61,25 @@ class WFunctMySQL extends WDBConn
        if($this->commands($query
                            ,"статья добавлена"
                            ,"info: ошибка записи "
+                           ,$report)){$objInsert->id=mysqli_insert_id($this->link);}else{return false;}
+       return true;
+    }
+ //------------------------------------------------------------------------------------------------------------------  
+    public function updateArticle($objInsert,&$report)
+    {$report="";
+      $header=mysqli_real_escape_string($this->link,$objInsert->header);
+      $annonce=mysqli_real_escape_string($this->link,$objInsert->annonce);
+      $text=mysqli_real_escape_string($this->link,$objInsert->text);
+      if(isset($objInsert->picture)){ $query="UPDATE info SET header='$header',datePublic='$objInsert->datePublic',"
+                                                  ."annonce='$annonce',text='$text',picture='".addslashes($objInsert->picture)
+                                                  ."',size_pic='$objInsert->size_pic' WHERE id='$objInsert->id'";}
+                                  else{$query="UPDATE info SET header='$header',datePublic='$objInsert->datePublic',"
+                                                  ."annonce='$annonce',text='$text',picture=NULL"
+                                                  .",size_pic='0' WHERE id='$objInsert->id'";}
+ 
+       if($this->commands($query
+                           ,"статья обновлена"
+                           ,"info: ошибка обновления "
                            ,$report)){}else{return false;}
        return true;
     }
@@ -123,7 +142,9 @@ class WFunctMySQL extends WDBConn
         $tempVal->annonce=$line[3];
         $arrayResult[$i]=$tempVal;
       }
-      return $arrayResult;
+      if(isset($arrayResult))
+                 {return $arrayResult;}
+                    else{return false;}
     }
     //-----------------------------------------------------------------------------------------------------------------------
       public function getCountButtons(&$report)
@@ -164,7 +185,7 @@ class WFunctMySQL extends WDBConn
       //----------------------------------------------------------------------------------------------------------------------
     public function selectOneNewsRefresh($id,&$outRes,&$report)
     { 
-      $query="SELECT id,header,annonce,datePublic,text,size_pic FROM info WHERE id='$id'";
+      $query="SELECT id,header,annonce,datePublic,text,picture,size_pic FROM info WHERE id='$id'";
       $result =mysqli_query( $this->link,$query); 
            if ($result===false) {
                                 $report=$report."<br/>info: ошибка при чтении ".mysqli_error($this->link)."\n";
@@ -177,6 +198,27 @@ class WFunctMySQL extends WDBConn
       $outRes->annonce=$line[2];
       $outRes->datePublic=$line[3];
       $outRes->text=$line[4];
+      $outRes->picture=$line[5];
+      $outRes->size_pic=$line[6];
+      return true;
+    }
+          //----------------------------------------------------------------------------------------------------------------------
+    public function selectOneNewsHeader($header,&$outRes,&$report)
+    { 
+      $query="SELECT id,annonce,datePublic,text,picture,size_pic FROM info WHERE header='$header'";
+      $result =mysqli_query( $this->link,$query); 
+           if ($result===false) {
+                                $report=$report."<br/>info: ошибка при чтении ".mysqli_error($this->link)."\n";
+                                return false;
+                               }
+      $report=$report."<br/>чтение прошло успешно";                      
+      $line=mysqli_fetch_row($result); 
+      $outRes->id=$line[0];
+      $outRes->header=$header;
+      $outRes->annonce=$line[1];
+      $outRes->datePublic=$line[2];
+      $outRes->text=$line[3];
+      $outRes->picture=$line[4];
       $outRes->size_pic=$line[5];
       return true;
     }

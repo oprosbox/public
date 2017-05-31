@@ -27,8 +27,10 @@ class WLoginPass extends WFunctMySQL
     public function outUser(&$currentUser,&$report)
     {$currentUser->__construct();
      $report="<h5 style=color:green'>выход произведен</h5>";
-     if(isset($_SESSION[USERNAME])){unset($_SESSION[USERNAME]);}
-    return true;   
+     if(isset($_GET['btnInOut'])){if(isset($_SESSION[USERNAME])){unset($_SESSION[USERNAME]);}
+                                  return true;
+                                 }
+    return false;   
     }
     
     public function testLoginPassword(&$report,$login="",$password="")

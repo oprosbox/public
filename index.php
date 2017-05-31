@@ -9,45 +9,29 @@ and open the template in the editor.
         <meta http-equiv="content-type" content="text/html;charset=utf-8" charset="utf-8" />
         <link href="css/cssStyle.css" rel="stylesheet" type="text/css" />
         <script src="scripts/jquery-3.1.1.min.js"></script>
-        <title></title>
-        
+        <script src="scripts/scriptsToWork.js"></script>
+        <title></title>  
     </head>
-          <script type="text/javascript">
-    function getPage(numPage)          
-    { nPage="";
-     if(numPage!==""){nPage="page="+numPage;}
-      $("#centerB").load($("#userVar").attr("name")+".php",nPage);
-    }   
-    
+   <script type="text/javascript">
+  //-----------------------------------------------------------------------------------
     $(document).ready(function(){ 
-         userVar='unreg';
+        //getRegist("",""); 
         
         $("#regist").load("userInOut.php");
-        
-         $(document).ajaxStop(function(){
-              $("#btnRegistr").click(function(){  
-                                     $("#regist").load("userInOut.php",$("#btnRegistr").attr("name")+"=1"+
-                                                                       "&login="+$("#loginReg").val()+
-                                                                       "&password="+$("#passwordReg").val());                         
-                     }); 
-               if(userVar!=$("#userVar").attr("name"))                           
-                                    {
-                                      getPage("");
-                                      userVar=$("#userVar").attr("name");
-                                    }
-                  });       
-      
-          
-    });
+        getPage("");
+        //getRegist("","");
+        //$("#btnRegistr").click(function(){getRegist($("#loginReg").val(),$("#passwordReg").val());});
+        });
     </script>
 <body>
-<div id="addressWin">
-  <div id="regist"></div>
-</div> 
-<div id="centrWinB">  
-<div class="h40"></div> 
-<div id="centerB"></div>
-<div class="h40"></div> 
-</div>
+    
+    <div id="addressWin">
+          <div id="regist"></div>
+    </div> 
+     <div id="centrWinB">  
+          <div class="h40"></div> 
+          <div id="centerB"></div>
+          <div class="h40"></div> 
+    </div>
 </body>
 </html>

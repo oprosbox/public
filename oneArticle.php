@@ -1,39 +1,25 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-     <head>
-        <meta http-equiv="content-type" content="text/html;charset=utf-8" charset="utf-8" />
-        <link href="css/cssStyle.css" rel="stylesheet" type="text/css" />
-        <title></title>
-    </head>
- 
-    <body>
-        
-           <div id="addressWin">
-  <div id="info">Разработчик сайта: Лень В. В.</div>
-</div> 
-       <div id="centrWinB">  
-           <div class="h40"></div> 
-<div id="centerB">
+
         <?php
         include_once 'sql\functMySQLOut.php';
-        if(isset($_GET['page']))
+        session_start();
+        if(isset($_GET['idArticle']))
         {$reportInit="";
-         $getFromBase=new WFunctMySQLOut('userUpdate','manyPassUpdate1905',$reportInit);
-         echo $getFromBase->getPageData($_GET['page'], $reportInit);}
-          if(isset($_GET['pageAdmin']))
-        {$reportInit="";
-         $getFromBase=new WFunctMySQLOut('userUpdate','manyPassUpdate1905',$reportInit);
-         echo $getFromBase->getPageDataAdmin($_GET['pageAdmin'], $reportInit);}
-        ?>
-    
-    </div>
-<div class="h40"></div> 
-</div>
+         $getFromBase=new WFunctMySQLOut('userSelect','passToManySelect1905',$reportInit);
+          if(isset($_SESSION[USERNAME]))
+        {
+         if($_SESSION[USERNAME]->rights==='root')    
+         {//администратор
+           echo $getFromBase->getPageDataAdmin($_GET['idArticle'], $reportInit);}    
+              elseif($_SESSION[USERNAME]->rights==='user')
+              {//зарегестрированный пользователь
+              echo $getFromBase->getPageData($_GET['idArticle'], $reportInit);   
+              }
+              else{ echo "<h4>таких прав не существует</h4>";}
+         }
+          else{ //не зарегестрированный пользователь
+             echo $getFromBase->getPageData($_GET['idArticle'], $reportInit);  
+             
+          }
+        
+          }
 
-    </body>
-</html>

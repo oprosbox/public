@@ -16,7 +16,7 @@ class WNews extends SNews
   
  public function resultOperat($flg)
  {if ($this->flgFirst){}
-      elseif($flg){return "<p><h5 style='color:green'>успешно!</h5>";}
+      elseif($flg){return "<p><h5 style='color:green'>корректно!</h5>";}
            else{return "<p><h5 style='color:red'>откорректируйте!</h5>";}
  }
  //----------------------функция создает и заполняет форму 
@@ -63,14 +63,21 @@ $form=$form."</form>";
   }
 
 protected function isGoodPict($name,&$pict,&$size_pict,&$report)
-{ $size_pict=0;
-  //if(isset($_POST[$name])){ 
-  $pict=$this->get_image($name,$size_pict,$report);
-  if ($pict !== ''){
-        return true;
-  }
-  //}else{$report=$report.$_FILES[$name]['error'];}
-   return false; 
+{ $flgResult=false;$size=0;
+ if(isset($_POST['rbImage']))
+ { if($_POST['rbImage']=='rbAdd'){ 
+                                  $pictNew=$this->get_image($name,$size,$report);
+                                  echo $report;
+                                  if ($size !== 0)//картинка удачно получена
+                                        {$flgResult=true;
+                                         $pict=$pictNew;
+                                         $size_pict=$size;
+                                         echo 25;}}
+                                elseif($_POST['rbImage']=='rbDell'){$pict='';//картинка удалена успешно
+                                                                  $size_pict=0;
+                                                                  $flgResult=true;}
+                                          }
+   return $flgResult; 
 } 
 
 protected function isGoodDate($name,&$date,&$report)
@@ -86,8 +93,42 @@ protected function isGoodText($name,&$text,$maxlen,$minlen,&$report)
 {
     if(isset($_POST[$name]))  
     {$text=($_POST[$name]);
-    if((strlen($text)>$maxlen)or(strlen($text)<$minlen)){}
-          else{return true;}
+    $size=strlen($text);
+    if(($size>$maxlen)or($size<$minlen))
+        {$report=$report."текст длинной $size должен быть в интервале от $minlen до $maxlen";}
+          else{$report=$report."текст введен успешно";
+               return true;}
+    }
+    return false;
+}
+
+protected function isGoodPict_($size_pict,&$report)
+{ 
+  if ($size_pict !== 0){
+      $report='картинка загружена';
+        return true;}
+  $report='картинка не загружена';
+   return false; 
+} 
+
+protected function isGoodDate_(&$date,&$report)
+{
+ if(isset($date))  
+ {$report=$report.'время задано';
+   return true;
+    }
+    $report=$report.'задайте время';
+    return false;
+} 
+
+protected function isGoodText_(&$text,$maxlen,$minlen,&$report)
+{
+    if(isset($text))  
+    {$size=strlen($text);
+    if(($size>$maxlen)or($size<$minlen))
+         {$report=$report."текст длинной $size должен быть в интервале от $minlen до $maxlen";}
+          else{$report=$report."текст введен успешно";
+               return true;}
     }
     return false;
 }
@@ -120,8 +161,9 @@ public function __construct() {
         $this->flgFirst=true;
         $this->count=0;
         $this->size_pic=0;
+        $this->id=0;
         }
-//функция проверяет  пришедшие данные, и форматирует их    
+//функция проверяет  пришедшие данные, форматирует их и выставляет флаги     
 public function setParamsFromPost()
 { $report='';
   $this->flgHeader=$this->isGoodText("header",$this->header,HEADERMAX,HEADERMIN,$report);
@@ -131,13 +173,23 @@ public function setParamsFromPost()
   $this->flgPicture=$this->isGoodPict('picture',$this->picture,$this->size_pic,$report); 
 //echo $report;  
 }
-  
+ 
+//функция проверяет текущие данные и выставляет флаги    
+public function setParamsFromText()
+{ $report='';
+  $this->flgHeader=$this->isGoodText_($this->header,HEADERMAX,HEADERMIN,$report);
+  $this->flgDatePublic=$this->isGoodDate_($this->datePublic,$report);
+  $this->flgAnnonce=$this->isGoodText_($this->annonce,ANNONCMAX,ANNONCMIN,$report);
+  $this->flgText=$this->isGoodText_($this->text,TEXTMAX,TEXTMIN,$report);
+  $this->flgPicture=$this->isGoodPict_($this->picture,$this->size_pic,$report); 
+//echo $report;  
+}
+
 protected function get_image($name,&$image_size,&$ErrorDescription){
   // Проверяем не пустали глобальная переменная $_FILES
+    $image_size=0;
   if(!empty($_FILES)){
-	$image_size=$_FILES['picture']['size'];
-        
-	// Ограничение на размер файла, в моём случае 1Мб
+	$image_size=$_FILES['picture']['size'];// Ограничение на размер файла, в моём случае 1Мб
 	if($image_size>1024*1024||$image_size==0)
 	{
 		 $ErrorDescription="Каждое изображение не должно привышать 1Мб! 
