@@ -10,16 +10,18 @@ $currentUser=new SUser();
 $btnValue='';
 $flagInOut=true;
 $inOut=new WLoginPass('userSelect','passToManySelect1905',$reportInit);
- if(isset($_SESSION[USERNAME])){$currentUser=$_SESSION[USERNAME]; $btnValue='выйти';}
+ if(isset($_SESSION[USERNAME]))//в зависимости от наличия пользователя выставляем надпись на кнопке
+              {$currentUser=$_SESSION[USERNAME]; $btnValue='выйти';}
                     else{$btnValue='войти';}
                             
 if(isset($_GET['btnInOut']))
-    {
-    if(isset($_SESSION[USERNAME])){$flagInOut=$inOut->outUser($currentUser,$report);
-                                    if($flagInOut===true){$btnValue='войти';}
+    {//если была нажата кнопка btnInOut
+    if(isset($_SESSION[USERNAME])){//Если в системе уже есть пользователь происходит выход 
+                                    $flagInOut=$inOut->outUser($currentUser,$report);
+                                    if($flagInOut===true){$btnValue='войти';}//пеняем надпись на кнопке
                                     else{$btnValue='выйти';}}
-                    else{$flagInOut=$inOut->inUser($currentUser,$report);
-                         if($flagInOut===true){$btnValue='выйти';}
+                    else{$flagInOut=$inOut->inUser($currentUser,$report);//Если в системе нет пользователя происходит попытка входа
+                         if($flagInOut===true){$btnValue='выйти';} //пеняем надпись на кнопке в зависимости от результата
                                  else{$btnValue='войти';}
                             }
     }    
@@ -36,11 +38,10 @@ $result="<div class='usersReg'>"
         ."<script>"
         ."\$(document).ready(function(){" 
         ."\$('#btnRegistr').click(function(){getRegist(\$('#loginReg').val(),\$('#passwordReg').val());});";
-  if($flagInOut===true){$result=$result."getPage('');";}
-        
+  if($flagInOut===true){//если было событие входа или выхода перерисуем список статей
+                          $result=$result."getPage('');";}    
  $result=$result ." hideFunct('#reportOutIn',5000);"
          ."});"  
          ."</script>"; 
- 
 echo $result;
 ?>

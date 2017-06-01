@@ -2,123 +2,71 @@
 <?php
 
 include_once 'sql\functMySQLOut.php';
-
+// в данном модуле хранится 
+//объект наследник SNews предназначен для обработки и хранения информации о 1 статье находящейся на редактировании
+//посредством объекта происходит взаимодействие с формой пользователя
 class WNews extends SNews
 {   
   public 
-  $flgHeader,
-  $flgDatePublic,
-  $flgAnnonce,
-  $flgText,
-  $flgPicture;
-  public $flgFirst,
-  $count;
-  
+  $flgHeader, //флаг корректности заголовка
+  $flgDatePublic, //флаг корректности даты публикации
+  $flgAnnonce, //флаг корректности аннотации
+  $flgText, //флаг корректности текста статьи
+  $flgPicture; //флаг корректности введеной картинки
+  public 
+  $flgFirst; //флаг первой инициализации 
+// функция просто выводит сообщенния в зависимости от флага  
  public function resultOperat($flg)
  {if ($this->flgFirst){}
       elseif($flg){return "<p><h5 style='color:green'>корректно!</h5>";}
            else{return "<p><h5 style='color:red'>откорректируйте!</h5>";}
  }
- //----------------------функция создает и заполняет форму 
- public function formForAdd(&$form)
- {$form="";
- $pict=$this->resultOperat($this->flgPicture);
- $head=$this->resultOperat($this->flgHeader);
- $annon=$this->resultOperat($this->flgAnnonce);
- $txt=$this->resultOperat($this->flgText);
- $dateAdd=$this->resultOperat($this->flgDatePublic);
-  //создаю форму 
-$form="<form action='InfoCreate.php' method='POST' name='formAdd'>
-    <p>
-    <h4>картинка</h4><p>
-    <input type='file' name='picture' /><br />
-    $pict
-    <hr>
-    <h4>заголовок</h4><p>
-    <textarea cols='100' rows='3'  name='header' required='required'> $this->header </textarea> 
-    $head
-    <hr>
-    <h4>аннотация<h4><p>
-    <textarea cols='100' rows='3' name='annonce' required='required'> $this->annonce </textarea> 
-    $annon
-    <hr>
-    <h4>текст статьи<h4><p>
-    <textarea cols='100' rows='20' name='text' required='required'> $this->text </textarea> 
-    $txt
-    <hr>
-    <h4>время добавления<p></h4>
-    <input type='datetime-local' name='datePublic' value='$this->datePublic'/>
-    $dateAdd
-<hr><p>
-    <input type='submit' value='добавить' name='add'><p>";
-//если заходит в первый раз, тогда ничего не пишет.
-if ($this->flgFirst){$this->flgFirst=false;}
-     elseif ($this->isGood()){$form=$form."<h4 style='color:green'>добавлено успешно!</h4>";}
-                             else{$form=$form."<h4 style='color:red'>откорректируйте, пожалуйста!</h4>";}
-        
-$form=$form."</form>"; 
-  }
-
+//---------------------------------вытаскивает и проверяет картинку----------------------------------------------
 protected function isGoodPict($name,&$pict,&$size_pict,&$report)
 { $flgResult=false;$size=0;
-
- if(isset($_POST['rbImage']))
+ if(isset($_POST['rbImage']))//если поступила команда добавить
  { if($_POST['rbImage']=='rbAdd'){ 
-                                  $pictNew=$this->get_image($name,$size,$report);
-                                  if ($size !== 0)//картинка удачно получена
-                                        {$flgResult=true;
+                                  $pictNew=$this->get_image($name,$size,$report);//извлечение полученой картинки
+                                  if ($size !== 0)
+                                        {$flgResult=true;//картинка получена и перезаписана в объекте
                                          $pict=$pictNew;
-                                         $size_pict=$size;
-                                         }}
-                                elseif($_POST['rbImage']=='rbDell'){$pict='';//картинка удалена успешно
+                                         $size_pict=$size;}}
+                                elseif($_POST['rbImage']=='rbDell'){$pict='';//картинка удалена из объекта успешно
                                                                   $size_pict=0;
                                                                   $flgResult=true;}
-                                          }   
-  
+                                          }  
    return $flgResult; 
 } 
-
+//-------------------------------вытаскивает и проверяет время из запроса--------------------------
 protected function isGoodDate($name,&$date,&$report)
 {
  if(isset($_POST[$name]))  
- {$date=$_POST[$name];
-   return true;
-    }
-    return false;
+ {$date=$_POST[$name];$report='время получено';return true;}
+   else{$report='время не пришло';return false;}
 } 
-
+//--------------------------вытаскивает и проверяет текст, приходящий в запросе--------------------------------
 protected function isGoodText($name,&$text,$maxlen,$minlen,&$report)
 {
     if(isset($_POST[$name]))  
     {$text=($_POST[$name]);
-    $size=strlen($text);
-    if(($size>$maxlen)or($size<$minlen))
-        {$report=$report."текст длинной $size должен быть в интервале от $minlen до $maxlen";}
-          else{$report=$report."текст введен успешно";
-               return true;}
-    }
-    return false;
+      return $this->isGoodText_($text,$maxlen,$minlen,$report);}
+       else{return false;}
 }
-
+//--------------------проверка картинки -----------------------------------------------------
 protected function isGoodPict_($size_pict,&$report)
 { 
-  if ($size_pict !== 0){
-      $report='картинка загружена';
-        return true;}
-  $report='картинка не загружена';
-   return false; 
+  if ($size_pict !== 0)
+      {$report='картинка загружена';return true;}
+       else{$report='картинка не загружена';return false;} 
 } 
-
+//------------------------------проверка времени на коректность---------------------------------------- 
 protected function isGoodDate_(&$date,&$report)
 {
  if(isset($date))  
- {$report=$report.'время задано';
-   return true;
-    }
-    $report=$report.'задайте время';
-    return false;
+ {$report=$report.'время задано';return true;}
+   else{$report=$report.'задайте время';return false;}
 } 
-
+//---------------------------условие корректноста текстового поля------------------------------------------
 protected function isGoodText_(&$text,$maxlen,$minlen,&$report)
 {
     if(isset($text))  
@@ -130,7 +78,7 @@ protected function isGoodText_(&$text,$maxlen,$minlen,&$report)
     }
     return false;
 }
-//---------------условие при котором информация на 1 статью пришла и заполнены полностью
+//---------------условие при котором информация на 1 статью пришла и готова для записи в базу------------
 public function isGood()
 {
   if(($this->flgHeader)and
@@ -142,7 +90,7 @@ public function isGood()
           }  
           else return false;
 }
-//----------------------------------------------------------------
+//------конструктор объекта зануляет значения при инициализации---------------------------
 public function __construct() {
         $this->header="заголовок";
         $this->datePublic= date("Y-m-dTH:i");
@@ -157,11 +105,10 @@ public function __construct() {
         $this->flgText=false;
         $this->flgPicture=false;
         $this->flgFirst=true;
-        $this->count=0;
         $this->size_pic=0;
         $this->id=0;
         }
-//функция проверяет  пришедшие данные, форматирует их и выставляет флаги     
+//---------------------функция проверяет  пришедшие данные, форматирует их и выставляет флаги----------------    
 public function setParamsFromPost()
 { $report='';
   $this->flgHeader=$this->isGoodText("header",$this->header,HEADERMAX,HEADERMIN,$report);
@@ -171,7 +118,7 @@ public function setParamsFromPost()
   $this->flgPicture=$this->isGoodPict('picture',$this->picture,$this->size_pic,$report); 
 }
  
-//функция проверяет текущие данные и выставляет флаги    
+//----------------функция проверяет текущие данные и выставляет флаги------------------------------------------
 public function setParamsFromText()
 { $report='';
   $this->flgHeader=$this->isGoodText_($this->header,HEADERMAX,HEADERMIN,$report);
@@ -180,7 +127,8 @@ public function setParamsFromText()
   $this->flgText=$this->isGoodText_($this->text,TEXTMAX,TEXTMIN,$report);
   $this->flgPicture=$this->isGoodPict_($this->size_pic,$report); 
 }
-
+//----------------------проверка условия что картинка пришла,
+//извлечение полученой картинки из временного хранилища и загрузка её в оперативную память
 protected function get_image($name,&$image_size,&$ErrorDescription){
   // Проверяем не пустали глобальная переменная $_FILES
     $image_size=0;
@@ -204,16 +152,12 @@ protected function get_image($name,&$image_size,&$ErrorDescription){
 		unlink($_FILES[$name]['tmp_name']);
                 return $image;      
 	}else{  unlink($_FILES[$name]['tmp_name']);
-		$ErrorDescription="Вы загрузили не изображение,
-			поэтому оно не может быть добавлено.";
+		$ErrorDescription="Вы загрузили не изображение";
 			return '';
 	}    
   }else{
-	$ErrorDescription="Вы не загрузили изображение, поле пустое,
-		поэтому файл в базу не может быть добавлен.";
-		return '';
-  }
-	
+	$ErrorDescription="Вы не загрузили изображение, поле пустое";
+		return '';}	
 }
 
 } 

@@ -1,5 +1,6 @@
 <?php
-
+//в модуле описан класс, который предназначен для непосредственной работы с базой Mysql
+//здесь собраны функции которые применяются для создания базы таблиц и пользователей.
 include_once 'sql\baseMySQL.php';
 
 class WDBCreate extends WDBConn
@@ -12,7 +13,7 @@ class WDBCreate extends WDBConn
       public function __destruct() {
        parent::__destruct();
     }
-    
+//------------------------------------создает базу данных----------------------------------      
     public function createDB(&$report)
     {
      if($this->commands("CREATE DATABASE dbNews"
@@ -21,7 +22,7 @@ class WDBCreate extends WDBConn
                    ,$report)){}else{return false;}
      return true;
     }
-    
+//------------------------------------создает таблицу для статей----------------------------------    
       public function createTableInfo(&$report)
     {  if (mysqli_select_db($this->link, 'dbNews')){}
          else{ $report="Ошибка при создании таблицы info:" . mysqli_error($this->link) . "\n";
@@ -41,7 +42,7 @@ class WDBCreate extends WDBConn
                                ,$report)){}else{return false;}
                                return true;
       }
-      
+//----------------------------------создает таблицу пользователей-----------------------      
     public function createTableUser(&$report)
     {if (mysqli_select_db($this->link, 'dbNews')){}
          else{ $report="Ошибка при создании таблицы info:" . mysqli_error($this->link) . "\n";
@@ -63,7 +64,7 @@ class WDBCreate extends WDBConn
                                             else{return false;}
        return true;
     }
-    
+//-----------удаляет базу данных-------------------------------------------------------------------------------------    
     public function deleteDB(&$report)
     {     
            if($this->commands("DROP DATABASE dbNews"
@@ -72,7 +73,7 @@ class WDBCreate extends WDBConn
                    ,$report)){}else{return false;}
        return true;
     }
-//----------------------------------------------------------------------------------------------------------------     
+//-----------------------создает пользователей------------------------------------------------------------------------     
     public function createUser(&$report)
     { if (mysqli_select_db($this->link, 'dbNews')){}
          else{ $report="Ошибка при выборе таблицы info:" . mysqli_error($this->link) . "\n";
@@ -100,7 +101,7 @@ class WDBCreate extends WDBConn
                    ,$report)){}else{return false;}
           return true;         
     }
-    
+//-----------------------удаляет пользователей---------------------------------------------    
       public function deleteUser(&$report)
     {   if (mysqli_select_db($this->link, 'dbNews')){}
          else{ $report="Ошибка при выборе таблицы info:" . mysqli_error($this->link) . "\n";
@@ -128,7 +129,7 @@ class WDBCreate extends WDBConn
                    ,$report)){}else{}
                     return true; 
     }
-    
+//-------------------создает базу,таблицы и пользователей-----------------------------------------------------------------    
     public function createDBTables(&$tblResult)
     { $messDBStr='';
       $messTblUser='';
@@ -149,7 +150,7 @@ class WDBCreate extends WDBConn
       return true;
       
     }
-    
+//-----------------------------удаляет таблицы из базы данных---------------------------------------------------    
      public function deleteDBTables(&$tblResult)
     { $messDBStr='';
       $messNewUsers='';
@@ -161,6 +162,31 @@ class WDBCreate extends WDBConn
                            return false;}       
      
       return true; 
+    }
+   //---------------------сохраняет резервную копию данные в базу----------------------------- 
+      public function exportData($batFileName,&$result)
+    {  $str =getcwd()."\\copyBase\\mysqldump -u".$this->login." -p".$this->password." dbNews> ".getcwd()."\\copyBase\\import.sql";
+       $cmd="cmd c/ ".$str ; 
+       $str=$str."\n@pause";
+       $result="выгрузка данных запущена";
+       exec($cmd.">".getcwd()."\\copyBase\\error.log"); 
+       $fd = fopen(getcwd()."\\copyBase\\export.bat", 'w');
+       fwrite($fd, $str);
+       fclose($fd);
+       return true;
+    }
+    
+      //---------------------заливает данные в базу----------------------------- 
+      public function importData($batFileName,&$result)
+    {  $str="mysql -u".$this->login." -p".$this->password." dbNews< ".getcwd()."\\copyBase\\import.sql";
+       $cmd="cmd c/ ".$str;
+       $str=$str."\n@pause";
+       $result="загрузка данных запущена";
+       exec($cmd.">".getcwd()."\\copyBase\\error.log"); 
+       $fd = fopen(getcwd()."\\copyBase\\import.bat", 'w');
+       fwrite($fd, $str);
+       fclose($fd);
+       return true;
     }
 }
 

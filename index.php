@@ -14,13 +14,9 @@ and open the template in the editor.
     </head>
    <script type="text/javascript">
   //-----------------------------------------------------------------------------------
-    $(document).ready(function(){ 
-        //getRegist("",""); 
-        
-        $("#regist").load("userInOut.php");
-        getPage("");
-        //getRegist("","");
-        //$("#btnRegistr").click(function(){getRegist($("#loginReg").val(),$("#passwordReg").val());});
+    $(document).ready(function(){
+        $("#regist").load("userInOut.php");//первая загрузка формы регистрации пользователей
+        getPage("");//прорисовка статей
         });
     </script>
 <body>

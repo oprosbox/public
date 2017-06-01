@@ -17,7 +17,7 @@
 <div id="centerB">
     <hr/>
     <h4>войти в базу данных</h4>
-      <form action='install.php' method='POST'>
+      <form action='install.php' method='POST' class='installForm'>
         <input type='text' value='root' name='login'><br /><br />
         <input type='password' name='password'><br /><br />
         <input type='submit' value='Войти' name='btnLog'>
@@ -25,57 +25,61 @@
         echo addLogPassToSession();
          ?>
     </form>
-        <form action='install.php' method='POST'>
-        <h4 style='display:inline'>создать базу и пользователей</h4><input type='submit' value='создать' name='createDBUserAll' class="inputCRDB"/>
+        <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>создать базу и пользователей</h4><input type='submit' value='создать' name='createDBUserAll' class="inputCRDB"/></form> 
        <?php
        if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->createDBUser();}
          ?>
-    </form> 
-      <form action='install.php' method='POST'>
-        <h4 style='display:inline'>удалить базу и пользователей</h4><input type='submit' value='удалить' name='deleteDBUserAll' class="inputCRDB"/>
+      <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>удалить базу и пользователей</h4><input type='submit' value='удалить' name='deleteDBUserAll' class="inputCRDB"/></form>
        <?php
        if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->deleteDBUser();}
          ?>
-    </form> 
     <hr/><br />
-    <form action='install.php' method='POST'>
-        <h4 style='display:inline'>создать базу данных</h4><input type='submit' value='создать' name='createAll' class="inputCRDB"/>
+      <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>импортировать данные</h4><input type='submit' value='импорт' name='importDB' class="inputCRDB"/></form> 
+       <?php
+       if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->importDB();}
+         ?>
+      <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>экспортировать данные</h4><input type='submit' value='экспорт' name='exportDB' class="inputCRDB" enebled='false'/></form>
+       <?php
+       if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->exportDB();}
+         ?>
+    <hr/><br />
+    <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>создать базу данных</h4><input type='submit' value='создать' name='createAll' class="inputCRDB"/></form>
        <?php
        if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->createDBOut();}
-         ?>
-    </form>   
-     <form action='install.php' method='POST'>
-        <h4 style='display:inline'>удалить базу данных</h4><input type='submit' value='удалить' name='deleteAll' class="inputCRDB"/>
+         ?> 
+     <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>удалить базу данных</h4><input type='submit' value='удалить' name='deleteAll' class="inputCRDB"/></form>
      <?php
      if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->deleteDBOut();}
          ?>
-     </form>
     <hr style='clear:both'/><br />
-    <form action='install.php' method='POST'>
-        <h4 style='display:inline'>создать таблицу info</h4><input type='submit' value='создать' name='createInfo' class='inputCRDB'/>
+    <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>создать таблицу info</h4><input type='submit' value='создать' name='createInfo' class='inputCRDB'/></form>
       <?php
       if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->createTblInfo();}
          ?>
-    </form>
-    <form action='install.php' method='POST'>
-        <h4 style='display:inline'>создать таблицу site_users</h4><input type='submit' value='создать' name='createUsers' class='inputCRDB'/>
+    <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>создать таблицу site_users</h4><input type='submit' value='создать' name='createUsers' class='inputCRDB'/></form>
       <?php
       if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->createTblUsers();}
          ?>
-    </form><hr/><br />
-        <form action='install.php' method='POST'>
-        <h4 style='display:inline'>создать пользователей</h4><input type='submit' value='создать' name='createDBUser' class='inputCRDB'/>
+    <hr/><br />
+        <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>создать пользователей</h4><input type='submit' value='создать' name='createDBUser' class='inputCRDB'/></form>
       <?php
     if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->createUserOut();} 
          ?>
-    </form>
-     <form action='install.php' method='POST'>
-        <h4 style='display:inline'>удалить пользователей</h4><input type='submit' value='удалить' name='deleteDBUser' class='inputCRDB'/>
+     <form action='install.php' method='POST' class='installForm'>
+        <h4 style='display:inline'>удалить пользователей</h4><input type='submit' value='удалить' name='deleteDBUser' class='inputCRDB'/></form>
       <?php
       if(isset($GLOBALS["db"])){ echo $GLOBALS["db"]->deleteUserOut();}
       ?>
-     </form><hr/><br />
-</div>
+     <hr/><br />
 <div class="h40"></div> 
 </div>
 

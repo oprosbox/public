@@ -11,8 +11,7 @@
     $(document).ready(
   function(){
     $(document).ajaxStop(function(){
-         
-                 $("#btnNewRegistr").click(function(){
+                 $("#btnNewRegistr").click(function(){//при последующем обновлении приходит кнопка и на неё вешается Ajax-запрос
                          $("#info").load("registration.php","newRegistr=1"+
                                                                  "&login="+$("#loginR").val()+
                                                                  "&password="+$("#passwordR").val()
@@ -21,7 +20,7 @@
                           });          
                           
                });       
-    $("#info").load("registration.php");
+    $("#info").load("registration.php");//первый старт(функция запрашивает окно регистрации)
     });
     </script>
     

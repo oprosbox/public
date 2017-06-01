@@ -1,6 +1,6 @@
 
 <?php
-
+// скрипт удаляет статью из базы данных (строку из таблицы info)
 if (isset($_GET['delId'])) {   
 include_once 'sql\functMySQL.php';
 $reportInit="";

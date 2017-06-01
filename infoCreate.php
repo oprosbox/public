@@ -6,24 +6,24 @@ include_once 'sql\functMySQLOut.php';
 session_start();
 $report="";
 $addToBase=new WFunctMySQLOut('userUpdate','manyPassUpdate1905',$report);
-//----------------------при первом запуске скрипта создается объект и помещается в сессииж 
+//----------------------при первом запуске скрипта создается объект и помещается в сессии 
 if(isset($_SESSION['objAdd']))
     {//повторное использование
      $sNews=$_SESSION['objAdd'];}
     else{//первый запуск
         $sNews=new WNews;
          $_SESSION['objAdd']=$sNews;}
-         
+ //Если пользователь передал id статьи, тогда объект обновляется из базы       
     if(isset($_GET['idArticle']))
         {$sNews->id=$_GET['idArticle'];
          $addToBase->selectOneNewsRefresh($sNews->id, $sNews, $report);
          $sNews->datePublic=str_replace(" ", "T", $sNews->datePublic);
          $sNews->setParamsFromText();}
-    if(isset($_POST['add'])){
-        $addToBase->setData($sNews,$report);}//функция проверяет пришедшие данные, в случае успеха заносит их в БД, отправляет результат обработки  
-     elseif(isset($_POST['refresh'])){$addToBase->refreshData($sNews, $report);}//функция проверяет пришедшие данные и отправляет результат обработки
-         elseif(isset($_POST['update'])){$addToBase->updateData($sNews, $report);}
-            elseif(isset($_POST['delete'])){$addToBase->deleteData($sNews, $report);}
+         
+    if(isset($_POST['add'])){$addToBase->setData($sNews,$report);}//функция проверяет пришедшие данные, в случае успеха заносит их в БД как новую запись, отправляет результат обработки пользователю 
+     elseif(isset($_POST['refresh'])){$addToBase->refreshData($sNews, $report);}//функция проверяет пришедшие данные и отправляет результат обработки пользователю
+         elseif(isset($_POST['update'])){$addToBase->updateData($sNews, $report);}//функция проверяет пришедшие данные, обновляет текущий индекс и отправляет результат обработки пользователю
+            elseif(isset($_POST['delete'])){$addToBase->deleteData($sNews, $report);}//функция удаляет из базы статью с текущим id
      ?>
     
    <form action='index.php' method='POST' name='formAdd' id='postFormAdd' enctype="multipart/form-data">
@@ -59,12 +59,6 @@ if(isset($_SESSION['objAdd']))
      <hr/><br/>
      <div style=''>   
      <h4 >картинка </h4 ><h5>(*необязательное для заполнения поле)</h5>
-     
-   <script>
-    //$(document).ready(function(){$('input[type=file]').change(function(){fileImage = this.files;
-    //                                                                     $("#regist").css("background-image:",fileImage);})
-    //                       });
-   </script>
    
       <fieldset>
          <legend>добавьте картинку</legend>
@@ -82,10 +76,8 @@ if(isset($_SESSION['objAdd']))
  
 if ($sNews->flgFirst){$sNews->flgFirst=false;}//если заходит в первый раз, тогда ничего не пишет.
      elseif ($sNews->isGood()){//статья может быть добавлена
-            echo "<h4 style='color:green'>$report</h4>";
-                             }
+            echo "<h4 style='color:green'>$report</h4>";}
                              else{//статья не может быть добавлена т. к. некорректно заполнен один из параметров
-                                   echo "<h4 style='color:red'>$report</h4>";
-                                  }  
+                                   echo "<h4 style='color:red'>$report</h4>";}  
 ?>      
 </form>

@@ -34,7 +34,7 @@ public function updateData(&$SNews,&$report)
     else{$report=$report."откорректируйте, пожалуйста! ";}
           
 }   
-//---------------------------функция проверяет пришедшие данные-----------------------
+//---------------------------функция проверяет пришедшие данные и не добавляя в базу обновляет флаги допустимых значений-----------------------
 public function refreshData(&$SNews,&$report)
 { 
   $SNews->setParamsFromPost();
@@ -42,14 +42,14 @@ public function refreshData(&$SNews,&$report)
  if($SNews->isGood()){ }
                      else{$report="откорректируйте, пожалуйста! ";}       
 }
-//---------------------------функция проверяет пришедшие данные-----------------------
+//---------------------------удаление статьи из базы данных и очищает объект в котором происходит редактирование статьи-----------------------
 public function deleteData(&$SNews,&$report)
-{ if($SNews->id===0){$report=$report."выберите статью ";} 
+{ if($SNews->id===0){$report=$report."выберите статью ";} //статья не назначена
      else{if($this->deleteNews($SNews->id, $report))
                           {$SNews->__construct();
                             $SNews->flgFirst=false;}}      
 }
-//------------------------------------------------------------------------------------------------------------------------------
+//---------------------получает страницу со статьей(обычный пользователь)-------------------------------------------------------------
 public function getPageData($id,&$report)
 {$outRes=new SNews;
  if($this->selectOneNews($id, $outRes, $report))
@@ -63,7 +63,7 @@ public function getPageData($id,&$report)
  else {return "error";} 
 }
 
-//------------------------------------------------------------------------------------------------------------------------------
+//------------------------получает страницу со статьей(администратор)--------------------------------------------------------------
 public function getPageDataAdmin($id,&$report)
 {$outRes=new SNews;
  if($this->selectOneNews($id, $outRes, $report))
@@ -82,8 +82,8 @@ public function getPageDataAdmin($id,&$report)
  } 
  else {return "error";} 
 }
-//----------------------------------------------------------------------------------------------------------------------------
-protected function getLine($num,$size,$MaxOut)
+//--------------линия с номерами страниц новостей----------------------------------------------------
+protected function getLine($num,$size,$MaxOut)//$Num-номер страницы $size-размер ленты $MaxOut-максимальное число выводимых кнопок со страницами
 {
   $page="<div class='pagging'><h4>страницы:</h4><ul>";
    
@@ -91,18 +91,18 @@ protected function getLine($num,$size,$MaxOut)
    {//максимальное количество елементов < максимального индекса
      for($i=0;$i<$size;$i++) 
      {$page=$page."<li><a onclick=\"getPage($i)\" >".($i+1)."</a></li>";}
-   }else{if($num+2<$MaxOut){//"индекс находится спереди";
+   }else{if($num+2<$MaxOut){//"текущий индекс находится спереди";
                          for($i=0;$i<$MaxOut-1;$i++) 
                          {$page=$page."<li><a onclick=\"getPage(".($i).")\">".($i+1)."</a></li>";}
                           $page=$page."<li><h4>...</h4></li>";
                           $page=$page."<li><a onclick=\"getPage(".($size-1).")\">".($size)."</a></li>";
                           }
-            elseif($size-$num+1<$MaxOut){//"индекс находится сзади";
+            elseif($size-$num+1<$MaxOut){//"текущий индекс находится сзади";
                                       $page=$page."<li><a onclick=\"getPage(0)\">".(1)."</a></li>";
                                       $page=$page."<li><h4> ...</h4></li>";  
                                       for($i=1;$i<$MaxOut;$i++) 
                                       {$page=$page."<li><a onclick=\"getPage(".($size-$MaxOut+$i).")\">".($size-$MaxOut+$i+1)."</a></li>";}}
-                 else{//"индекс находится всередине";
+                 else{//"текущий индекс находится по середине";
                        $page=$page."<li><a onclick=\"getPage(0)\">".(1)."</a></li>";
                        $page=$page."<li><h4>...</h4></li>";
                        for($i=0;$i<$MaxOut-2;$i++) 
@@ -115,8 +115,8 @@ protected function getLine($num,$size,$MaxOut)
                            
 return $page;
  }
- //------------------------------------формирует список новостей--------------------------------------------------------
-public function getPageListUnreg($Num,&$report)
+ //------------------------------------формирует список новостей(незарегистрированный пользователь)--------------------------------------------------------
+public function getPageListUnreg($Num,&$report)//$Num-номер страницы
 {$page="";$report='';
   $news=$this->selectNews($Num, $report);
   if($news)
@@ -129,13 +129,13 @@ public function getPageListUnreg($Num,&$report)
     $totalPage=$this->getCountButtons($report);
     $page=$page.$this->getLine($Num,$totalPage,8);
   }
-   //в случае если удалили последнюю запись на странице рекурсивно подгружает последнюю не пустую страницу
+   //в случае если не находит последнюю запись на странице рекурсивно подгружает последнюю не пустую страницу
     if(($news===false)and($report=="чтение прошло успешно")and($Num!='0')){$Num=$Num-1;
                                                                           $page=$this->getPageListUnreg($Num,$report);}
  return $page;
 }
-//------------------------------------формирует список новостей--------------------------------------------------------
-public function getPageListReg($Num,&$report)
+//------------------------------------формирует список новостей(зарегестрированный пользователь)--------------------------------------------------------
+public function getPageListReg($Num,&$report)//$Num-номер страницы
 {$page="";$report='';
   $news=$this->selectNews($Num, $report);
   if($news)
@@ -148,14 +148,14 @@ public function getPageListReg($Num,&$report)
     $totalPage=$this->getCountButtons($report);
     $page=$page.$this->getLine($Num,$totalPage,8);
   }
-  //в случае если удалили последнюю запись на странице рекурсивно подгружает последнюю не пустую страницу
+  //в случае если не находит последнюю запись на странице рекурсивно подгружает последнюю не пустую страницу
     if(($news===false)and($report=="чтение прошло успешно")and($Num!='0')){$Num=$Num-1;
                                                                           $page=$this->getPageListReg($Num,$report);}
  return $page;
 }  
 
-//------------------------------------формирует список новостей--------------------------------------------------------
-public function getPageListAdmin($Num,&$report)
+//------------------------------------формирует список новостей(администратор)--------------------------------------------------------
+public function getPageListAdmin($Num,&$report)//$Num-номер страницы
 {$page="<h4 onclick=\"getFormAdd('')\" class='linkText'>добавить</h4>";$report='';
 $news=$this->selectNews($Num, $report);
   if($news)
