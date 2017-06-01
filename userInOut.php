@@ -1,5 +1,5 @@
 <?php
-
+// скрипт выводит форму с логином паролем и позволяет проводить вход/выход пользователя в систему
 require_once 'loginPassw.php';
     
 $reportInit="";
@@ -24,16 +24,13 @@ if(isset($_GET['btnInOut']))
                             }
     }    
     
-
-    
-      
-
+//форма выводит логин пароль пользователя 
 $result="<div class='usersReg'>"
-        ."<div><a href='regForm.php'>регистрация</a></div>"
+        ."<div><a href='regForm.php' class='linkText'>регистрация</a></div>"
         ."<div><h4>Логин:</h4><input type='text' value='$currentUser->login' id='loginReg'/></div>"
         ."<div><h4>Пароль:</h4><input type='password' value='$currentUser->password' id='passwordReg'/></div>"
-        ."<div class='endLine'><a id='btnRegistr' name='btnInOut'>$btnValue</a>"
-        ."<div id='reportOutIn'>$report</div></div>"
+        ."<div><a id='btnRegistr' name='btnInOut' class='linkText'>$btnValue</a>"
+        ."<div id='reportOutIn' style='float:right;padding-top:12px'>$report</div></div>"
         ."</div>"
    //скрипт отвечает за работу кнопки входа пользователя и обновления ленты новостей в случае если произошел вход или выход     
         ."<script>"

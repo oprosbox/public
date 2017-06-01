@@ -1,4 +1,4 @@
-
+<!-- страница регистрации пользователей-->
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html;charset=utf-8" charset="utf-8" />
@@ -13,7 +13,7 @@
     $(document).ajaxStop(function(){
          
                  $("#btnNewRegistr").click(function(){
-                         $("#centrWinB").load("registration.php","newRegistr=1"+
+                         $("#info").load("registration.php","newRegistr=1"+
                                                                  "&login="+$("#loginR").val()+
                                                                  "&password="+$("#passwordR").val()
                                                                  
@@ -21,7 +21,7 @@
                           });          
                           
                });       
-    $("#centrWinB").load("registration.php");
+    $("#info").load("registration.php");
     });
     </script>
     
@@ -29,12 +29,6 @@
     <div id="addressWin">
          <div id="info"></div>
     </div> 
-     <div id="centrWinB">  
-           <div class="h40"></div> 
-           <div id="centerB"></div>
-           <div class="h40"></div> 
-    </div>
- 
     </body>
     
 </html>

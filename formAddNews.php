@@ -53,30 +53,28 @@ $form="<form action='InfoCreate.php' method='POST' name='formAdd'>
     <input type='submit' value='добавить' name='add'><p>";
 //если заходит в первый раз, тогда ничего не пишет.
 if ($this->flgFirst){$this->flgFirst=false;}
-     elseif ($this->isGood()){
-            $form=$form."<h4 style='color:green'>добавлено успешно!</h4>";
-                             }
-                             else{$form=$form."<h4 style='color:red'>откорректируйте, пожалуйста!</h4>";
-                             }
+     elseif ($this->isGood()){$form=$form."<h4 style='color:green'>добавлено успешно!</h4>";}
+                             else{$form=$form."<h4 style='color:red'>откорректируйте, пожалуйста!</h4>";}
         
 $form=$form."</form>"; 
   }
 
 protected function isGoodPict($name,&$pict,&$size_pict,&$report)
 { $flgResult=false;$size=0;
+
  if(isset($_POST['rbImage']))
  { if($_POST['rbImage']=='rbAdd'){ 
                                   $pictNew=$this->get_image($name,$size,$report);
-                                  echo $report;
                                   if ($size !== 0)//картинка удачно получена
                                         {$flgResult=true;
                                          $pict=$pictNew;
                                          $size_pict=$size;
-                                         echo 25;}}
+                                         }}
                                 elseif($_POST['rbImage']=='rbDell'){$pict='';//картинка удалена успешно
                                                                   $size_pict=0;
                                                                   $flgResult=true;}
-                                          }
+                                          }   
+  
    return $flgResult; 
 } 
 
@@ -171,7 +169,6 @@ public function setParamsFromPost()
   $this->flgAnnonce=$this->isGoodText('annonce',$this->annonce,ANNONCMAX,ANNONCMIN,$report);
   $this->flgText=$this->isGoodText('text',$this->text,TEXTMAX,TEXTMIN,$report);
   $this->flgPicture=$this->isGoodPict('picture',$this->picture,$this->size_pic,$report); 
-//echo $report;  
 }
  
 //функция проверяет текущие данные и выставляет флаги    
@@ -181,8 +178,7 @@ public function setParamsFromText()
   $this->flgDatePublic=$this->isGoodDate_($this->datePublic,$report);
   $this->flgAnnonce=$this->isGoodText_($this->annonce,ANNONCMAX,ANNONCMIN,$report);
   $this->flgText=$this->isGoodText_($this->text,TEXTMAX,TEXTMIN,$report);
-  $this->flgPicture=$this->isGoodPict_($this->picture,$this->size_pic,$report); 
-//echo $report;  
+  $this->flgPicture=$this->isGoodPict_($this->size_pic,$report); 
 }
 
 protected function get_image($name,&$image_size,&$ErrorDescription){
