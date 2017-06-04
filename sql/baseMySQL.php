@@ -33,7 +33,7 @@ class WDBConn
     public function __construct($login,$password,&$report,$base=false) {
        $this->login='';$this->password='';
          if($base===false){$this->createConnect($login,$password,$report);}
-                       else{$this->createConnectBase($login,$password,$report);}
+                       else{$this->createConnectBase($login,$password,$report,$base);}
     }
  //-------------деструктор уничтожает соединение---------------------------------------   
      public function __destruct() {$this->closeConnect();}
@@ -51,7 +51,7 @@ class WDBConn
 //-------------функция создает соединение и цепляется к базе данных---------------------------------------
      protected function createConnectBase($login,$password,&$report,$base='dbNews')
     {
-      if(createConnect($login,$password,$report)===false){return false;}
+      if($this->createConnect($login,$password,$report)===false){return false;}
       if (mysqli_select_db($this->link, $base)){}
          else{ $report="Ошибка выбора БД: " . mysqli_error($this->link) . "\n";
                return false;}

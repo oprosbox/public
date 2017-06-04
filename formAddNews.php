@@ -55,7 +55,7 @@ protected function isGoodText($name,&$text,$maxlen,$minlen,&$report)
 //--------------------проверка картинки -----------------------------------------------------
 protected function isGoodPict_($size_pict,&$report)
 { 
-  if ($size_pict !== 0)
+  if ($size_pict !== NULL)
       {$report='картинка загружена';return true;}
        else{$report='картинка не загружена';return false;} 
 } 
@@ -98,7 +98,7 @@ public function __construct() {
         $this->datePublic=str_replace("C", "", $this->datePublic);
         $this->annonce="аннотация";
         $this->text="текст статьи";
-        $this->picture="";
+        $this->picture=NULL;
         $this->flgHeader=false;
         $this->flgDatePublic=false;
         $this->flgAnnonce=false;
@@ -107,6 +107,7 @@ public function __construct() {
         $this->flgFirst=true;
         $this->size_pic=0;
         $this->id=0;
+        $this->idPict=NULL;
         }
 //---------------------функция проверяет  пришедшие данные, форматирует их и выставляет флаги----------------    
 public function setParamsFromPost()

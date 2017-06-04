@@ -27,19 +27,30 @@ class WDBCreate extends WDBConn
     {  if (mysqli_select_db($this->link, 'dbNews')){}
          else{ $report="Ошибка при создании таблицы info:" . mysqli_error($this->link) . "\n";
                return false;}
-         
+            if($this->commands("CREATE TABLE pictures(
+                                id integer AUTO_INCREMENT NOT NULL,
+                                pict MEDIUMBLOB,
+                                PRIMARY KEY (id))"
+                               ,"таблица picture успешно создана"
+                               ,"Ошибка при создании таблицы picture:"
+                               ,$report)){}else{return false;}
+                               
             if($this->commands("CREATE TABLE info(
                                 id integer AUTO_INCREMENT NOT NULL,
                                 header varchar(".HEADERMAX.") NOT NULL,
                                 datePublic DATETIME NOT NULL,
                                 annonce varchar(".ANNONCMAX.") NOT NULL,
                                 text varchar(".TEXTMAX.") NOT NULL,
-                                picture MEDIUMBLOB,
+                                idPict integer,
                                 size_pic integer NOT NULL,
-                                PRIMARY KEY (id))"
+                                PRIMARY KEY (id),
+                                FOREIGN KEY (idPict) REFERENCES pictures(id)
+                                ON DELETE SET NULL)"
                                ,"таблица info успешно создана"
                                ,"Ошибка при создании таблицы info:"
                                ,$report)){}else{return false;}
+                               
+            
                                return true;
       }
 //----------------------------------создает таблицу пользователей-----------------------      

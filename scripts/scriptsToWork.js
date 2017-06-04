@@ -34,7 +34,7 @@
       $(document).load("deleteArticle.php","delId="+idArticle,getPage(""));
     } 
 
-
+//---------------------комманды редактирования информации---------------------------------
     function btnComm(command)          
     {
      
@@ -43,6 +43,7 @@
       $.ajax({
              url: 'infoCreate.php',
              data: fmData,
+             cache:false,
              processData: false,
              contentType: false,
              type: 'POST',

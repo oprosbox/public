@@ -45,7 +45,7 @@ public function refreshData(&$SNews,&$report)
 //---------------------------удаление статьи из базы данных и очищает объект в котором происходит редактирование статьи-----------------------
 public function deleteData(&$SNews,&$report)
 { if($SNews->id===0){$report=$report."выберите статью ";} //статья не назначена
-     else{if($this->deleteNews($SNews->id, $report))
+     else{if($this->deleteNews($SNews, $report))
                           {$SNews->__construct();
                             $SNews->flgFirst=false;}}      
 }
